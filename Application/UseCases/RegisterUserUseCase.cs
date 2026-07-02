@@ -1,5 +1,7 @@
-﻿using Application.DTOs;
+using Application.DTOs;
 using Application.Interfaces;
+using Application.Sanitizers;
+using Application.Validators.User;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces;
@@ -19,28 +21,26 @@ public class RegisterUserUseCase
 
     public async Task<RegisterUserResponse> ExecuteAsync(RegisterUserRequest request)
     {
-        var existingUser = await _userRepository.GetByEmailAsync(request.Email);
-        if (existingUser != null)
-        {
-            throw new UserAlreadyExistsException(request.Email);
-        }
+        var sanitizedRequest = RegisterUserSanitizer.Sanitize(request);
 
-        string passwordHash = _passwordHasher.Hash(request.Password);
+        RegisterUserValidator.Validate(sanitizedRequest);
 
-        var user = new User(
-            name: request.Name,
-            email: request.Email,
-            passwordHashed: passwordHash,
-            profilePhoto: request.ProfilePhoto
-        );
+        var exists = await _userRepository.GetByEmailAsync(sanitizedRequest.Email);
+
+        if (exists != null)
+            throw new UserAlreadyExistsException(sanitizedRequest.Email);
+
+        var hash = _passwordHasher.Hash(sanitizedRequest.Password);
+
+        var user = new User(sanitizedRequest.Name, sanitizedRequest.Email, hash, sanitizedRequest.ProfilePhoto);
 
         await _userRepository.AddAsync(user);
 
         return new RegisterUserResponse(
-            Id: user.Id,
-            Name: user.Name,
-            Email: user.Email,
-            ProfilePhoto: user.ProfilePhoto
+            user.Id,
+            user.Name,
+            user.Email,
+            user.ProfilePhoto
         );
     }
 }
