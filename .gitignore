@@ -1,4 +1,6 @@
 # Pastas do Visual Studio
+.idea/
+.vscode/
 .vs/
 **/bin/
 **/obj/
@@ -14,3 +16,10 @@
 
 # Variáveis de ambiente
 .env
+
+publish/
+
+*.nupkg
+packages/
+
+Thumbs.db
