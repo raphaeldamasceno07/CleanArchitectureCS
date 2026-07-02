@@ -11,3 +11,6 @@ obj/
 
 # Arquivos de log e cache
 *.log
+
+# Variáveis de ambiente
+.env
