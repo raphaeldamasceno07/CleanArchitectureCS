@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Domain.Interfaces;
 using System.Collections.Concurrent;
 
@@ -21,7 +21,7 @@ public class InMemoryUserRepository : IUserRepository
         return Task.FromResult<User?>(user);
     }
 
-    public Task<User?> GetByUserByIdAsync(Guid id)
+    public Task<User?> GetByIdAsync(Guid id)
     {
         _users.TryGetValue(id, out var user);
         return Task.FromResult<User?>(user);
