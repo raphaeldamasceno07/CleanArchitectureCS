@@ -1,9 +1,8 @@
-﻿using Application.DTOs;
+using Application.DTOs;
 using Application.UseCases;
 using Domain.Exceptions;
 using Infrastructure.Repositories;
 using UnitTest.Fakes;
-using Xunit; // Test framework
 
 namespace UnitTest.UseCases.User;
 
@@ -17,12 +16,12 @@ public class RegisterUserUseCaseTests
         var useCase = new RegisterUserUseCase(repository, hasher);
 
         var request = new RegisterUserRequest
-        {
-            Name = "Raphael",
-            Email = "raphael@teste.com",
-            Password = "very_strong_password",
-            ProfilePhoto = null
-        };
+      (
+          Name: "Raphael",
+          Email: "raphael@teste.com",
+          Password: "senha_super_Forte1@",
+          ProfilePhoto: null
+      );
 
         var response = await useCase.ExecuteAsync(request);
 
@@ -38,14 +37,15 @@ public class RegisterUserUseCaseTests
         // 1. Arrange
         var repository = new InMemoryUserRepository();
         var hasher = new FakePasswordHasher();
-        var useCase = new RegisterUserUseCase(repository,hasher);
+        var useCase = new RegisterUserUseCase(repository, hasher);
 
         var request = new RegisterUserRequest
-        {
-            Name = "Raphael",
-            Email = "raphael@teste.com",
-            Password = "senha_super_forte"
-        };
+        (
+            Name: "Raphael",
+            Email: "raphael@teste.com",
+            Password: "senha_super_Forte1@",
+            ProfilePhoto: null
+        );
 
         await useCase.ExecuteAsync(request);
 
@@ -53,8 +53,24 @@ public class RegisterUserUseCaseTests
             () => useCase.ExecuteAsync(request)
         );
 
-        Console.WriteLine(exception.Message );
-
         Assert.Contains($"The email '{request.Email}' is already registered in the system.", exception.Message);
+    }
+
+    [Theory]
+    [InlineData("", "raphael@test.com", "Password123!")]
+    [InlineData("R", "raphael@test.com", "Password123!")]
+    [InlineData("Raphael", "invalid-email", "Password123!")]
+    [InlineData("Raphael", "", "Password123!")]
+    [InlineData("Raphael", "raphael@test.com", "")]
+    [InlineData("Raphael", "raphael@test.com", "password")]
+    public async Task ExecuteAsync_ShouldThrowException_WhenDataIsInvalid(string name, string email, string password)
+    {
+        var repository = new InMemoryUserRepository();
+        var hasher = new FakePasswordHasher();
+        var useCase = new RegisterUserUseCase(repository, hasher);
+
+        var request = new RegisterUserRequest(Name: name, Email: email, Password: password, ProfilePhoto: "");
+
+        await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(request));
     }
 }
