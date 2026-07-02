@@ -5,4 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.16.7" />
+  </ItemGroup>
 </Project>

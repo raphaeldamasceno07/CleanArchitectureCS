@@ -1,7 +1,9 @@
 # Pastas do Visual Studio
+.idea/
+.vscode/
 .vs/
-bin/
-obj/
+**/bin/
+**/obj/
 
 # Arquivos temporários
 *.user
@@ -11,3 +13,13 @@ obj/
 
 # Arquivos de log e cache
 *.log
+
+# Variáveis de ambiente
+.env
+
+publish/
+
+*.nupkg
+packages/
+
+Thumbs.db
