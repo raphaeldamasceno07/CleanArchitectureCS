@@ -1,7 +1,7 @@
 # Pastas do Visual Studio
 .vs/
-bin/
-obj/
+**/bin/
+**/obj/
 
 # Arquivos temporários
 *.user
