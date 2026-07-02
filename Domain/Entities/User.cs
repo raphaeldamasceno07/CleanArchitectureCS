@@ -14,6 +14,15 @@ public class User
 
     public User(string name, string email, string passwordHashed, string? profilePhoto = null)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Invalid name");
+
+        if (!email.Contains("@"))
+            throw new ArgumentException("Invalid email");
+
+        if (string.IsNullOrWhiteSpace(passwordHashed))
+            throw new ArgumentException("Invalid password");
+
         Id = Guid.NewGuid();
         Name = name;
         Email = email;
@@ -26,5 +35,6 @@ public class User
     public void UpdateProfilePhoto(string photoUrl)
     {
         ProfilePhoto = photoUrl;
+        UpdatedAt = DateTime.UtcNow;
     }
 }
