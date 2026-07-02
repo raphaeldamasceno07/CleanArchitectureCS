@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities;
+namespace Domain.Entities;
 
 public class User
 {
@@ -9,6 +9,8 @@ public class User
     public string? ProfilePhoto { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
+
+    protected User() { }
 
     public User(string name, string email, string passwordHashed, string? profilePhoto = null)
     {
