@@ -23,7 +23,11 @@ public class RegisterUserUseCase
     {
         var sanitizedRequest = RegisterUserSanitizer.Sanitize(request);
 
-        RegisterUserValidator.Validate(sanitizedRequest);
+        var validator = new RegisterUserValidator();
+        var validationResult = validator.Validate(sanitizedRequest);
+
+        if (!validationResult.IsValid)
+            throw new DomainException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}");
 
         var exists = await _userRepository.GetByEmailAsync(sanitizedRequest.Email);
 

@@ -1,60 +1,52 @@
 using Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using FluentValidation;
+using System.Text.RegularExpressions;
 
 namespace Application.Validators.User;
 
-public static class RegisterUserValidator
+public class RegisterUserValidator : AbstractValidator<RegisterUserRequest>
 {
-    public static void Validate(RegisterUserRequest request)
+    public RegisterUserValidator()
     {
-        ValidateName(request.Name);
+        RuleFor(u => u.Name)
+            .NotEmpty()
+            .WithMessage("Name is required.")
+            .MinimumLength(2)
+            .WithMessage("Name must be at least 2 characters long.")
+            .MaximumLength(70)
+            .WithMessage("Name must not exceed 70 characters.")
+            .Matches(@"^[a-zA-Z\s]+$")
+            .WithMessage("Name can only contain letters and spaces (no numbers or special characters).");
 
-        ValidateEmail(request.Email);
+        RuleFor(u => u.Email)
+            .NotEmpty()
+            .WithMessage("Email is required.")
+            .EmailAddress()
+            .WithMessage("Email must be a valid email address.");
 
-        ValidatePassword(request.Password);
+        RuleFor(u => u.Password)
+            .NotEmpty()
+            .WithMessage("Password is required.")
+            .MinimumLength(8)
+            .WithMessage("Password must be at least 8 characters long.")
+            .Matches(@"[A-Z]")
+            .WithMessage("Password must contain at least one uppercase letter.")
+            .Matches(@"[a-z]")
+            .WithMessage("Password must contain at least one lowercase letter.")
+            .Matches(@"\d")
+            .WithMessage("Password must contain at least one number.");
+
+        RuleFor(u => u.ProfilePhoto)
+            .Must(photo => string.IsNullOrEmpty(photo) || IsValidImageUrl(photo))
+            .WithMessage("ProfilePhoto must be a valid URL or empty.");
     }
 
-    private static void ValidateName(string name)
+    private static bool IsValidImageUrl(string? url)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required");
+        if (string.IsNullOrEmpty(url))
+            return true;
 
-        if (name.Length < 2)
-            throw new ArgumentException("Name must have at least 2 characters");
-
-        if (name.Any(char.IsDigit))
-            throw new ArgumentException("Name cannot contain numbers");
-    }
-
-    private static void ValidateEmail(string email)
-    {
-        if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email is required");
-
-        if (!email.Contains("@") || email.StartsWith("@") || email.EndsWith("@"))
-            throw new ArgumentException("Invalid email");
-    }
-
-    private static void ValidatePassword(string password)
-    {
-        if (string.IsNullOrWhiteSpace(password))
-            throw new ArgumentException("Password is required");
-
-        if (password.Length < 8)
-            throw new ArgumentException("Password must be at least 8 characters");
-
-        if (!password.Any(char.IsUpper))
-            throw new ArgumentException("Password must contain uppercase");
-
-        if (!password.Any(char.IsLower))
-            throw new ArgumentException("Password must contain lowercase");
-
-        if (!password.Any(char.IsDigit))
-            throw new ArgumentException("Password must contain number");
-
-        if (!password.Any(ch => !char.IsLetterOrDigit(ch)))
-            throw new ArgumentException("Password must contain special char");
+        return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
+            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
     }
 }
