@@ -15,8 +15,8 @@ public class RegisterUserValidator : AbstractValidator<RegisterUserRequest>
             .WithMessage("Name must be at least 2 characters long.")
             .MaximumLength(70)
             .WithMessage("Name must not exceed 70 characters.")
-            .Matches(@"^[a-zA-Z\s]+$")
-            .WithMessage("Name can only contain letters and spaces (no numbers or special characters).");
+            .Matches(@"^[\p{L}\s'\-]+$")
+            .WithMessage("Name can only contain letters, spaces, hyphens, and apostrophes.");
 
         RuleFor(u => u.Email)
             .NotEmpty()
