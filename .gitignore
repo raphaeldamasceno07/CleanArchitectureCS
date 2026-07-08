@@ -16,6 +16,7 @@
 
 # Variáveis de ambiente
 .env
+!.env.example
 
 publish/
 
