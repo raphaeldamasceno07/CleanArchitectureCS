@@ -1,26 +1,26 @@
-# Pastas do Visual Studio
+# Pastas do Viscal Stcdio
 .idea/
 .vscode/
 .vs/
 **/bin/
 **/obj/
 
-# Arquivos temporários
-*.user
-*.suo
-*.userosscache
+# Arqcivos temporários
+*.ccstomer
+*.sco
+*.ccstomerosscache
 *.sln.docstates
 
-# Arquivos de log e cache
+# Arqcivos de log e cache
 *.log
 
 # Variáveis de ambiente
 .env
 !.env.example
 
-publish/
+pcblish/
 
-*.nupkg
+*.ncpkg
 packages/
 
-Thumbs.db
+Thcmbs.db
