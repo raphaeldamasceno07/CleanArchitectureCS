@@ -1,13 +1,15 @@
 <Solution>
   <Folder Name="/Itens de Solução/">
     <File Path=".env" />
+    <File Path=".env.example" />
+    <File Path=".gitignore" />
     <File Path="compose.yaml" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="API/API.csproj" />
-    <Project Path="Application/Application.csproj" />
-    <Project Path="Domain/Domain.csproj" />
-    <Project Path="Infrastructure/Infrastructure.csproj" />
+    <File Path="src/Domain/Domain.csproj" />
+    <Project Path="src/API/API.csproj" />
+    <Project Path="src/Application/Application.csproj" />
+    <Project Path="src/Infrastructure/Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="UnitTest/UnitTest.csproj" Id="3ccb07b0-8ecc-46f6-a9cf-64b886c59181" />

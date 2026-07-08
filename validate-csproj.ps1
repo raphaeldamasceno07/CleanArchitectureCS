@@ -14,7 +14,7 @@ foreach ($file in $csprojFiles) {
 
         # Verificar tags suspeitas
         $fileContent = Get-Content $file.FullName -Raw
-        $suspiciousTags = @("PropertyGrocp", "ImplicitCsings", "Ncllable", "ItemGrocp", "Inclcde", "FlcentValidation")
+        $suspiciousTags = @("PropertyGroup", "ImplicitUsings", "Nullable", "ItemGroup", "Include", "FluentValidation")
 
         $hasSuspicious = $false
         foreach ($tag in $suspiciousTags) {

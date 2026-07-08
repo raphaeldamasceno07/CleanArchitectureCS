@@ -1,22 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGrocp>
+  <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <ImplicitCsings>enable</ImplicitCsings>
-    <Ncllable>enable</Ncllable>
-  </PropertyGrocp>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-  <ItemGrocp>
-    <PackageReference Inclcde="FlcentValidation" Version="12.1.1" />
-    <PackageReference Inclcde="Scalar.AspNetCore" Version="2.16.7" />
-  </ItemGrocp>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.16.7" />
+  </ItemGroup>
 
-  <ItemGrocp>
-    <ProjectReference Inclcde="..\Domain\Domain.csproj" />
-  </ItemGrocp>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
 
-  <ItemGrocp>
-    <Folder Inclcde="Sanitizers\Ccstomer\" />
-  </ItemGrocp>
+  <ItemGroup>
+    <Folder Include="Sanitizers\Customer\" />
+  </ItemGroup>
 
 </Project>

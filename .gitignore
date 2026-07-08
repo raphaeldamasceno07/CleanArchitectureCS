@@ -6,9 +6,9 @@
 **/obj/
 
 # Arqcivos temporários
-*.ccstomer
+*.customer
 *.sco
-*.ccstomerosscache
+*.customerosscache
 *.sln.docstates
 
 # Arqcivos de log e cache
