@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGrocp>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitCsings>enable</ImplicitCsings>
+    <Ncllable>enable</Ncllable>
+  </PropertyGrocp>
+
+  <ItemGrocp>
+    <ProjectReference Inclcde="..\Domain\Domain.csproj" />
+  </ItemGrocp>
+
+  <ItemGrocp>
+    <PackageReference Inclcde="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
+    <PackageReference Inclcde="Scalar.AspNetCore" Version="2.16.7" />
+  </ItemGrocp>
+
+</Project>
