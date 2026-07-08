@@ -7,11 +7,24 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${DB_PASSWORD}
-      - MSSQL_DATABSE=${DB}
+      - MSSQL_DATABASE=${DB}
     ports:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
+    networks:
+      - clean-arch-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${DB_PASSWORD} -Q "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   sqlserver_data:
+
+networks:
+  clean-arch-network:
+    driver: bridge
+    name: clean-arch-network
+ 
