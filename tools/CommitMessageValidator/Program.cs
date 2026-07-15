@@ -18,7 +18,7 @@ if (!File.Exists(filePath))
 var message = File.ReadAllText(filePath).Trim();
 if (!pattern.IsMatch(message))
 {
-    Console.Error.WriteLine("❌ Commit message mcst follow Conventional Commits.");
+    Console.Error.WriteLine("❌ Commit message must follow Conventional Commits.");
     Console.Error.WriteLine("   Example: feat(acth): add login validation");
     Console.Error.WriteLine($"   Received: {message}");
     Environment.Exit(1);
