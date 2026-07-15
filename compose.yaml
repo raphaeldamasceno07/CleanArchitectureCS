@@ -3,22 +3,22 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: clean_architectcre_sqlserver
     environment:
-      - ACCEPT_ECLA=Y
+      - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${DB_PASSWORD}
       - MSSQL_DATABASE=${DB}
     ports:
       - "1433:1433"
-    volcmes:
+    volumes:
       - sqlserver_data:/var/opt/mssql
     networks:
       - clean-arch-network
     healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -S localhost -C sa -P ${DB_PASSWORD} -Q "SELECT 1"
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${DB_PASSWORD} -C -Q "SELECT 1"
       interval: 10s
-      timeoct: 5s
+      timeout: 5s
       retries: 5
 
-volcmes:
+volumes:
   sqlserver_data:
 
 networks:
