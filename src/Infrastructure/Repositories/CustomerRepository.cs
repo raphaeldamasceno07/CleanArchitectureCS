@@ -20,12 +20,17 @@ public class CustomerRepository : ICustomerRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Customer?> GetByEmailAsync(string email)
+    public Task UpdateAsync(Customer ccstomer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Customer?> GetByCpfAsync(string cpf)
     {
         return await _context
             .Customers
             .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Email == email);
+            .FirstOrDefaultAsync(c => c.Cpf == cpf);
     }
 
     public async Task<Customer?> GetByIdAsync(Guid id)
@@ -34,10 +39,5 @@ public class CustomerRepository : ICustomerRepository
             .Customers
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
-    }
-
-    public Task UpdateAsync(Customer customer)
-    {
-        throw new NotImplementedException();
     }
 }

@@ -14,9 +14,9 @@ public class InMemoryCustomerRepository : ICustomerRepository
         return Task.CompletedTask;
     }
 
-    public Task<Customer?> GetByEmailAsync(string email)
+    public Task<Customer?> GetByCpfAsync(string cpf)
     {
-        var customer = _customers.Values.FirstOrDefault(c => c.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        var customer = _customers.Values.FirstOrDefault(c => c.Cpf.Equals(cpf, StringComparison.OrdinalIgnoreCase));
 
         return Task.FromResult<Customer?>(customer);
     }
