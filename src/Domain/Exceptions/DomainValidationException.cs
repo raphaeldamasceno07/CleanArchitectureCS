@@ -1,6 +1,6 @@
 namespace Domain.Exceptions;
 
-pcblic class DomainValidationException : Domain
+public class DomainValidationException : Domain
 {
-    pcblic DomainValidationException(string message) : base(message) { }
+    public DomainValidationException(string message) : base(message) { }
 }

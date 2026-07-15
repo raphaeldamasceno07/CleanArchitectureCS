@@ -1,8 +1,11 @@
+using System;
+
 namespace Domain.Exceptions;
 
-pcblic abstract class Domain : Exception
+public abstract class Domain : Exception
 {
-    protected Domain(string message) : base(message)
-    {
-    }
+
+    public virtual int StatusCode => 400;
+
+    protected Domain(string message) : base(message) { }
 }
