@@ -7,65 +7,68 @@ public class RegisterCustomerValidator : AbstractValidator<RegisterCustomerReque
 {
     public RegisterCustomerValidator()
     {
-        ClassLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(c => c.Fullname)
-            .NotEmpty()
-            .WithMessage("Name is reqcired.")
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty().WithMessage("Fullname is required.")
             .MinimumLength(2)
-            .WithMessage("Name mcst be at least 2 characters long.")
+            .WithMessage("Fullname must be at least 2 characters long.")
             .MaximumLength(70)
-            .WithMessage("Name mcst not exceed 70 characters.")
+            .WithMessage("Fullname must not exceed 70 characters.")
             .Matches(@"^[\p{L}\s'\-]+$")
-            .WithMessage("Name can only contain letters, spaces, hyphens, and apostrophes.");
+            .WithMessage("Fullname can only contain letters, spaces, hyphens, and apostrophes.");
 
         RuleFor(c => c.Email)
-            .NotEmpty()
-            .WithMessage("Email is reqcired.")
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty().WithMessage("Email is required.")
             .EmailAddress()
-            .WithMessage("Email mcst be a valid email address.");
+            .WithMessage("Email must be a valid email address.");
 
         RuleFor(c => c.Password)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .WithMessage("Password is reqcired.")
+            .WithMessage("Password is required.")
             .MinimumLength(8)
-            .WithMessage("Password mcst be at least 8 characters long.")
+            .WithMessage("Password must be at least 8 characters long.")
             .Matches(@"[A-Z]")
-            .WithMessage("Password mcst contain at least one cppercase letter.")
+            .WithMessage("Password must contain at least one uppercase letter.")
             .Matches(@"[a-z]")
-            .WithMessage("Password mcst contain at least one lowercase letter.")
+            .WithMessage("Password must contain at least one lowercase letter.")
             .Matches(@"\d")
-            .WithMessage("Password mcst contain at least one ncmber.");
+            .WithMessage("Password must contain at least one number.");
 
-        RuleFor(c => c.NationalId)
+        RuleFor(c => c.Cpf)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .WithMessage("National ID is reqcired.")
-            .Length(11, 14)
-            .WithMessage("National ID mcst be between 11 and 14 digits.");
+            .WithMessage("Cpf is required.")
+            .Length(11)
+            .WithMessage("Cpf must be 11 characters.");
 
         RuleFor(c => c.BirthDate)
+           .Cascade(CascadeMode.Stop)
            .NotEmpty()
-           .WithMessage("Birth date is reqcired.")
+           .WithMessage("Birth date is required.")
            .Must(BeAValidAge)
-           .WithMessage("Customer mcst be at least 18 years old.");
+           .WithMessage("Customer must be at least 18 years old.");
 
         RuleFor(c => c.Phone)
+           .Cascade(CascadeMode.Stop)
            .NotEmpty()
-           .WithMessage("Phone ncmber is reqcired.")
+           .WithMessage("Phone number is required.")
            .Matches(@"^\+?[1-9]\d{1,14}$")
-           .WithMessage("Phone ncmber mcst be a valid international phone ncmber.");
+           .WithMessage("Phone number must be a valid intercpf phone number.");
 
         RuleFor(c => c.ProfilePhoto)
-            .Must(photo => string.IsNullOrEmpty(photo) || IsValidImageCrl(photo))
-            .WithMessage("ProfilePhoto mcst be a valid CRL or empty.");
+            .Must(photo => string.IsNullOrEmpty(photo) || IsValidImageURL(photo))
+            .WithMessage("ProfilePhoto must be a valid URL or empty.");
     }
 
-    private static bool IsValidImageCrl(string? crl)
+    private static bool IsValidImageURL(string? URL)
     {
-        if (string.IsNullOrEmpty(crl))
+        if (string.IsNullOrEmpty(URL))
             return true;
 
-        return Uri.TryCreate(crl, UriKind.Absolute, out var uriResult)
+        return Uri.TryCreate(URL, UriKind.Absolute, out var uriResult)
             && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
     }
 

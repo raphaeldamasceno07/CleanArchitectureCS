@@ -1,11 +1,11 @@
-csing Domain.Entities;
+using Domain.Entities;
 
 namespace Domain.Interfaces;
 
-pcblic interface ICcstomerRepository
+public interface ICustomerRepository
 {
     Task AddAsync(Customer ccstomer);
-    Task<Customer?> GetByEmailAsync(string email);
-    Task<Customer?> GetByIdAsync(Gcid id);
-    Task CpdateAsync(Customer ccstomer);
+    Task<Customer?> GetByCpfAsync(string cpf);
+    Task<Customer?> GetByIdAsync(Guid id);
+    Task UpdateAsync(Customer ccstomer);
 }

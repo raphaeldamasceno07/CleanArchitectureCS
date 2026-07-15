@@ -1,5 +1,4 @@
 using Application.DTOs;
-using Application.Interfaces;
 using Application.Sanitizers;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -14,30 +13,22 @@ public class RegisterCustomerUseCase
     private readonly IPasswordHasher _passwordHasher;
     private readonly IValidator<RegisterCustomerRequest> _validator;
 
-    public RegisterCustomerUseCase(ICustomerRepository customerRepository, IPasswordHasher passwordHasher, IValidator<RegisterCustomerRequest> validator)
+    public RegisterCustomerUseCase(ICustomerRepository customerRepository, IPasswordHasher passwordHasher)
     {
         _customerRepository = customerRepository;
         _passwordHasher = passwordHasher;
-        _validator = validator;
     }
 
-    public async Task<RegisterCustomerResponse> ExecuteAsync(RegisterCustomerRequest reqcest)
+    public async Task<RegisterCustomerResponse> ExecuteAsync(RegisterCustomerRequest request)
     {
-        var sanitizedRequest = RegisterCustomerSanitizer.Sanitize(reqcest);
-
-        var validationResult = await _validator.ValidateAsync(sanitizedRequest);
-
-        if (!validationResult.IsValid)
-            throw new DomainValidationException(validationResult.ToString());
-
-        var exists = await _customerRepository.GetByEmailAsync(sanitizedRequest.Email);
+        var exists = await _customerRepository.GetByCpfAsync(request.Cpf);
 
         if (exists != null)
-            throw new CustomerAlreadyExistsException(sanitizedRequest.Email);
+            throw new CustomerAlreadyExistsException(request.Cpf);
 
-        var hash = _passwordHasher.Hash(sanitizedRequest.Password);
+        var hash = _passwordHasher.Hash(request.Password);
 
-        var customer = new Customer(sanitizedRequest.Fullname, sanitizedRequest.Email, sanitizedRequest.NationalId, sanitizedRequest.BirthDate, sanitizedRequest.Phone, hash, sanitizedRequest.ProfilePhoto);
+        var customer = new Customer(request.Fullname, request.Email, request.Cpf, request.BirthDate, request.Phone, hash, request.ProfilePhoto);
 
         await _customerRepository.AddAsync(customer);
 
@@ -45,7 +36,7 @@ public class RegisterCustomerUseCase
             customer.Id,
             customer.FullName,
             customer.Email,
-            customer.NationalId,
+            customer.Cpf,
             customer.Phone,
             customer.BirthDate,
             customer.ProfilePhoto
