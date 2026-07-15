@@ -14,9 +14,12 @@ public class GlobalExceptionHandler
         {
             await _next(context);
         }
-        catch (Domain.Exceptions.Domain ex) 
+        catch (Domain.Exceptions.Domain ex)
         {
-            context.Response.StatusCode = 400; 
+            // Totalmente dinâmico! Cada exceção dita o seu próprio status HTTP
+            context.Response.StatusCode = ex.StatusCode;
+            context.Response.ContentType = "application/json";
+
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
         catch (Exception)
